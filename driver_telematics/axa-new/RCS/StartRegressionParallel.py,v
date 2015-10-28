@@ -1,0 +1,251 @@
+head	1.7;
+access;
+symbols;
+locks
+	zak:1.7; strict;
+comment	@# @;
+
+
+1.7
+date	2015.03.12.05.44.10;	author zak;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.12.05.18.00;	author zak;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.11.05.31.13;	author zak;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.11.04.31.03;	author zak;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.09.06.44.47;	author zak;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.09.06.13.32;	author zak;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.08.23.51.29;	author zak;	state Exp;
+branches;
+next	;
+
+
+desc
+@Main program for axa competition.
+@
+
+
+1.7
+log
+@fixed name of SGDDriver.
+@
+text
+@__version__ = '$Revision: 1.6 $'
+# $Id: StartRegressionParallel.py,v 1.6 2015/03/12 05:18:00 zak Exp zak $
+
+"""Main module for Kaggle AXA Competition
+
+Uses the logistic regression idea described by Stephane Soulier: https://www.kaggle.com/c/axa-driver-telematics-analysis/forums/t/11299/score-0-66-with-logistic-regression
+Hence, we use the traces from every driver as positive examples and build a set of references that we use as negative examples. Note that our set is larger by one driver, in case the reference set includes the driver that we are currently using as positive.
+"""
+
+from datetime import datetime
+from Driver import Driver
+from ClassifyDriver import RegressionDriver,RandomForestDriver,ExtraTreesDriver,LassoDriver,ElasticNetDriver,RidgeDriver,LinearSVCDriver,RBFSVRDriver,GBDriver,LogRegDriver,SGDDriver
+import os
+import sys
+from random import sample, seed
+from joblib import Parallel, delayed
+import re
+
+REFERENCE_DATA = {}
+
+def generatedata(drivers):
+    """
+    Generates reference data for regression
+
+    Input: List of driver folders that are read.
+    Returns: Nothing, since this data is stored in global variable ReferenceData
+    """
+    global REFERENCE_DATA
+    for driver in drivers:
+        REFERENCE_DATA[driver.identifier] = driver.generate_data_model
+
+
+def perform_analysis(folder, model_choice):
+    print "Working on {0}".format(folder)
+    sys.stdout.flush()
+    temp = Driver(folder)
+    if model_choice == 'Regression':
+        cls = RegressionDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'LogReg':
+        cls = LogRegDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'SGD':
+        cls = SGDDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'RandomForest':
+        cls = RandomForestDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'ExtraTrees':
+        cls = ExtraTreesDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'Lasso':
+        cls = LassoDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'ElasticNet':
+        cls = ElasticNetDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'Ridge':
+        cls = RidgeDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'LinearSVC':
+        cls = LinearSVCDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'RBFSVR':
+        cls = RBFSVRDriver(temp, REFERENCE_DATA)
+    elif model_choice == 'GB':
+        cls = GBDriver(temp, REFERENCE_DATA)
+    else:
+        print """
+            model choice not recognized. Options are:
+            Regression    RandomForest    Lasso
+            ElasticNet    Ridge           LinearSVR    
+            RBFSVR        GB
+            """
+        sys.exit()
+    cls.classify()
+    return cls.toKaggle()
+
+
+def analysis(foldername, outdir, referencenum, model_choice):
+    """
+    Start the analysis
+
+    Input:
+        1) Path to the driver directory
+        2) Path where the submission file should be written
+        3) Number of drivers to compare against
+        4) Choice of particular classification/regression model
+    """
+    version_number = re.sub("[^0-9.]", "", __version__)
+    seed()
+    start = datetime.now()
+    submission_id = datetime.now().strftime("%H_%M_%B_%d_%Y")
+    folders = [os.path.join(foldername, f) for f in os.listdir(foldername) if os.path.isdir(os.path.join(foldername, f))]
+    referencefolders = [folders[i] for i in sorted(sample(xrange(len(folders)), referencenum))]
+    referencedrivers = []
+    for referencefolder in referencefolders:
+        referencedrivers.append(Driver(referencefolder))
+    generatedata(referencedrivers)
+    results = Parallel(n_jobs=2)(delayed(perform_analysis)(folder, model_choice) for folder in folders)
+    with open(os.path.join(outdir, "py"+str(model_choice)+"_{0}_v".format(submission_id)+version_number+".csv"), 'w') as writefile:
+        writefile.write("driver_trip,prob\n")
+        for item in results:
+            writefile.write("%s\n" % item)
+    print 'Model chosen was %s' % model_choice 
+    print 'Done, elapsed time: %s' % str(datetime.now() - start)
+
+if __name__ == '__main__':
+    MyPath = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+    analysis(os.path.join(MyPath, "..", "driversnew"), MyPath, 100, sys.argv[1])
+@
+
+
+1.6
+log
+@added SGD.
+@
+text
+@d1 2
+a2 2
+__version__ = '$Revision: 1.5 $'
+# $Id: StartRegressionParallel.py,v 1.5 2015/03/11 05:31:13 zak Exp zak $
+d42 1
+a42 1
+        cls = SGDDRiver(temp, REFERENCE_DATA)
+@
+
+
+1.5
+log
+@n_jobs to 2
+@
+text
+@d1 2
+a2 2
+__version__ = '$Revision: 1.4 $'
+# $Id: StartRegressionParallel.py,v 1.4 2015/03/11 04:31:03 zak Exp zak $
+d12 1
+a12 1
+from ClassifyDriver import RegressionDriver,RandomForestDriver,ExtraTreesDriver,LassoDriver,ElasticNetDriver,RidgeDriver,LinearSVCDriver,RBFSVRDriver,GBDriver,LogRegDriver
+d41 2
+@
+
+
+1.4
+log
+@n_jobs to 4, added LogReg.
+@
+text
+@d1 2
+a2 2
+__version__ = '$Revision: 1.3 $'
+# $Id: StartRegressionParallel.py,v 1.3 2015/03/09 06:44:47 zak Exp zak $
+d89 1
+a89 1
+    results = Parallel(n_jobs=4)(delayed(perform_analysis)(folder, model_choice) for folder in folders)
+@
+
+
+1.3
+log
+@version number in output file. n_jobs from 2 to 4.
+@
+text
+@d1 2
+a2 2
+__version__ = '$Revision: 1.2 $'
+# $Id: StartRegressionParallel.py,v 1.2 2015/03/09 06:13:32 zak Exp zak $
+d12 1
+a12 1
+from ClassifyDriver import RegressionDriver,RandomForestDriver,ExtraTreesDriver,LassoDriver,ElasticNetDriver,RidgeDriver,LinearSVCDriver,RBFSVRDriver,GBDriver
+d39 2
+@
+
+
+1.2
+log
+@Attempt at including revision in __version__ string.
+@
+text
+@d1 2
+a2 2
+__version__ = '$Revision$'
+# $Id: StartRegressionParallel.py,v 1.1 2015/03/08 23:51:29 zak Exp zak $
+d17 1
+d77 1
+d87 2
+a88 2
+    results = Parallel(n_jobs=2)(delayed(perform_analysis)(folder, model_choice) for folder in folders)#[:4])
+    with open(os.path.join(outdir, "py"+str(model_choice)+"_{0}.csv".format(submission_id)), 'w') as writefile:
+a96 2
+    print __version__
+    exit
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 3
+a3 1
+# $Id$
+d95 2
+@

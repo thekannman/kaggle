@@ -1,0 +1,25 @@
+Random Forest by Randomization 
+
+137 samples
+ 43 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+
+Summary of sample sizes: 122, 123, 124, 124, 123, 123, ... 
+
+Resampling results across tuning parameters:
+
+  mtry  numRandomCuts  RMSE     Rsquared    RMSE SD   Rsquared SD
+   2    1              2787708  0.09130518  907942.1  0.09549072 
+   2    2              1579591  0.36268749        NA          NA 
+   2    3                  NaN         NaN        NA          NA 
+  22    1                  NaN         NaN        NA          NA 
+  22    2                  NaN         NaN        NA          NA 
+  22    3              1603612  0.25013522        NA          NA 
+  43    1                  NaN         NaN        NA          NA 
+  43    2                  NaN         NaN        NA          NA 
+  43    3                  NaN         NaN        NA          NA 
+
+RMSE was used to select the optimal model using  the smallest value.
+The final values used for the model were mtry = 2 and numRandomCuts = 2. 

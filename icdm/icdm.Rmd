@@ -1,0 +1,26 @@
+---
+title: "icdm"
+author: "Zak Kann"
+date: "July 6, 2015"
+output: pdf_document
+---
+
+Load libraries:
+``` {r libraries, message=FALSE}
+library(data.table)
+library(RSQLite)
+library(caret)
+```
+
+
+Connect to database and examine tables:
+```{r open.db}
+db <- dbConnect(SQLite(), dbname="input/database.sqlite")
+tables <- dbListTables(db)
+for (table in tables) {
+  cat(table, ":\n", sep="")
+  print(dbListFields(db,table))
+  cat("\n")
+}
+
+```

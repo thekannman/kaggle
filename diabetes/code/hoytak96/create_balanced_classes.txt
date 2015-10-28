@@ -1,0 +1,5 @@
+Skipping class 0; already present.  If error, remove these directories and restart.
+Running class 1
+Running class 2
+Running class 3
+Running class 4

@@ -1,0 +1,1 @@
+Rscript visualize.R drivers/$1/${2}.csv && gnome-open Rplots.pdf

@@ -1,0 +1,5 @@
+require(RSQLite)
+require(dplyr)
+db <- src_sqlite('../input/database.sqlite', create = F)
+AdsInfo <- db %>% tbl('AdsInfo')
+AdsInfo %>% glimpse()

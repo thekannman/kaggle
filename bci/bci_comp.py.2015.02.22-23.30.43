@@ -1,0 +1,186 @@
+## author: Zachary Kann
+## kaggle bci challenge
+## Special thanks to phalaris for his gbm benchmark code 
+
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier as GBClassifier, GradientBoostingRegressor as GBRegressor, RandomForestClassifier as RFClassifier
+from sklearn.linear_model import Lasso,ElasticNet,Ridge
+from sklearn import metrics
+from sklearn import cross_validation
+import os,re
+from datetime import datetime
+from parser import parser
+import validate
+from sklearn.feature_selection import RFECV
+from sklearn.cross_validation import StratifiedKFold
+
+class RFCCoef(RFClassifier):
+    def fit(self, *args, **kwargs):
+        super(RFCCoef, self).fit(*args, **kwargs)
+        self.coef_ = self.feature_importances_
+
+options = parser()
+
+train_labels = pd.read_csv('TrainLabels.csv')
+submission = pd.read_csv('SampleSubmission.csv')
+
+begin = 1 #20
+end = 260 #140
+
+submission_id = datetime.now().strftime("%H_%M_%B_%d_%Y")
+notes = open("notes_{0}.txt".format(submission_id),'w')
+#features = ['Cz', 'Fp1', 'Fp2']
+#features = ['Cz','FC1','FC2','CP1','CP2']
+#features = ['Fp1','Fp2','AF7','AF3','AF4','AF8','F7','F5','F3','F1','Fz','F2', 'F4','F6','F8','FT7','FC5','FC3','FC1','FCz','FC2','FC4','FC6','FT8', 'T7','C5','C3','C1','Cz','C2','C4','C6','T8','TP7','CP5','CP3','CP1', 'CPz','CP2','CP4','CP6','TP8','P7','P5','P3','P1','Pz','P2','P4','P6', 'P8','PO7','POz','P08','O1','O2']
+features = ['Cz', 'FC1','Fz','POz','P7', 'P8']
+
+notes.write("Features: "+str(features))
+
+def read_dataframe(purpose, indices):
+    frame = pd.DataFrame(columns=['subject','session','feedback_num','start_pos'] + 
+            [feature+'_' + s for feature in features for s in map(str,range(begin,end+1))],index=range(indices))
+    counter = 0
+    print 'loading '+purpose+' data'
+    data = {}
+    filenames = os.listdir('data/'+purpose)
+    print filenames
+    numfiles = len(filenames)
+    filecounter = 0
+    for filename in filenames:
+        filecounter += 1
+        split = filename.split('_')
+        subjectID = re.sub("[^[0-9]", "", split[1])
+        sessionID = re.sub("[^[0-9]", "", split[2])
+        temp = pd.read_csv("data/"+purpose+"/" + filename)
+        # Select rows with positive feedback result
+        fb = temp.query('FeedBackEvent == 1',engine='python')['FeedBackEvent']        
+        counter2 = 0
+        for index in fb.index:
+            for feature in features:
+                start_value = temp.loc[int(index)+1,feature]
+                temp2 = temp.loc[int(index)+begin:int(index)+end,feature]
+                temp2.index = [feature+'_' + s for s in map(str,range(begin,end+1))]
+                for key in temp2.keys():
+                    temp2[key] -= start_value
+                frame.loc[counter,[feature+'_' + s for s in map(str,range(begin,end+1))]] = temp2
+            frame.loc[counter,'session'] = sessionID
+            frame.loc[counter, 'subject'] = subjectID
+            frame.loc[counter, 'feedback_num'] = counter2
+            frame.loc[counter, 'start_pos'] = index
+            counter +=1
+            counter2 +=1
+        print purpose+' %d of %d' % (filecounter, numfiles)
+    return frame
+
+
+if options.continued:
+    print "Using old train/test results"
+    train = pd.read_csv(options.train, index_col=0)
+    test = pd.read_csv(options.test, index_col=0)
+else:
+    # Read training data
+    train = read_dataframe('train', 5440)
+    train_csv = "train_{0}.csv".format(submission_id)
+    train.to_csv(train_csv,ignore_index=True)
+    # Read testing data
+    test = read_dataframe('test', 3400)
+    test_csv = "test_{0}.csv".format(submission_id)
+    test.to_csv(test_csv,ignore_index=True)
+
+if options.append:
+    print "Appending Train"
+    feature_sum = [0.0]*len(train.index)
+    feature_diff = [0.0]*len(train.index)
+    feature_old = [0.0]*len(train.index)
+    for feature in features:
+        colname = feature+'_1'
+        for index in train.index:
+            feature_val = train[colname][index]
+            feature_sum[index] = feature_val
+            feature_old[index] = feature_val
+        for i in map(str,range(begin+1,end+1)):
+            colname = feature+'_'+i
+            for index in train.index:
+                feature_val = train[colname][index]
+                feature_sum[index] += feature_val
+                feature_diff[index] = feature_val - feature_old[index]
+                feature_old[index] = feature_val
+            sumcol = feature+'_sum_'+i
+            diffcol = feature+'_diff_'+i
+            train[sumcol] = feature_sum
+            train[diffcol] = feature_diff
+    train_csv = "train_sumdiff_{0}.csv".format(submission_id)
+    train.to_csv(train_csv,ignore_index=True)
+
+    print "Appending test"
+    feature_sum = [0.0]*len(test.index)
+    feature_diff = [0.0]*len(test.index)
+    feature_old = [0.0]*len(test.index)
+    for feature in features:
+        colname = feature+'_1'
+        for index in test.index:
+            feature_val = test[colname][index]
+            feature_sum[index] = feature_val
+            feature_old[index] = feature_val
+        for i in map(str,range(begin+1,end+1)):
+            colname = feature+'_'+i
+            for index in test.index:
+                feature_val = test[colname][index]
+                feature_sum[index] += feature_val
+                feature_diff[index] = feature_val - feature_old[index]
+                feature_old[index] = feature_val
+            sumcol = feature+'_sum_'+i
+            diffcol = feature+'_diff_'+i
+            test[sumcol] = feature_sum
+            test[diffcol] = feature_diff
+    test_csv = "test_sumdiff_{0}.csv".format(submission_id)
+    test.to_csv(test_csv,ignore_index=True)
+
+if options.dropout:
+    for feature in features:
+        for i in map(str,range(begin+1,end+1)):
+            print "working on "+feature+" number "+i
+            if int(i) % 5 == True: continue
+            train = train.drop(feature+'_'+i, axis=1).drop(feature+'_sum_'+i, axis=1).drop(feature+'_diff_'+i, axis=1)
+            test = test.drop(feature+'_'+i, axis=1).drop(feature+'_sum_'+i, axis=1).drop(feature+'_diff_'+i, axis=1)
+    train_csv = "train_dropout_sumdiff_{0}.csv".format(submission_id)
+    train.to_csv(train_csv,ignore_index=True)
+    test_csv = "test_dropout_sumdiff_{0}.csv".format(submission_id)
+    test.to_csv(test_csv,ignore_index=True)
+
+#Validate
+if (options.validate):
+    y_true = train_labels.values[:,1].ravel().astype(int)
+    validate.KFold(train.values[:,4:], y_true)
+    #validate.KFold(train.drop('subject', axis=1).values, y_true)
+    #validate.leavePLabelOut(train.drop('subject', axis=1).values, y_true, train['subject'].values)    
+
+
+print 'training'
+output = "py_{0}.csv".format(submission_id)
+clf = RFCCoef(n_estimators=100)
+#clf = Ridge(alpha=10.0)
+#clf = Lasso(alpha=0.1, max_iter=100000)
+y_true = train_labels.values[:,1].ravel().astype(int)
+rfecv = RFECV(estimator=clf, step=10, cv=StratifiedKFold(y_true, 4),
+              scoring='roc_auc')
+rfecv.fit(train.values[:,4:], y_true)
+
+import matplotlib.pyplot as plt
+
+plt.figure()
+plt.xlabel("Number of features selected")
+plt.ylabel("Cross validation score (nb of correct classifications)")
+plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+plt.show()
+
+#clf = GBClassifier(n_estimators=500,learning_rate=0.05, max_features=0.25)
+#clf = ElasticNet(alpha=0.07, max_iter=1000000)
+#clf.fit(train.drop('subject', axis=1), train_labels.values[:,1].ravel())
+#preds = rfecv.predict(test.values[:,316:])
+preds = rfecv.predict_proba(test.values[:,4:])
+preds = preds[:,1]
+submission['Prediction'] = preds
+submission.to_csv(output,index=False)
+print 'Done'

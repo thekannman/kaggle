@@ -1,0 +1,22 @@
+Found issue with maxbreak:
+	since a is calculated from distance in v-space, no negative values allowed. Not truly measuring breaking.
+
+Possible issue with fft:
+	Since using distances, it is fft of solely positive value... is this really what I want?
+
+Submitted ... without fixing above issues.
+
+May consider using entirety of fft (up to some cutoff) instead of just select points. Current method uses different lengths for fft depending on length of input, so indices don't correspond to same frequency in all, should use select length instead.
+May also consider using normalized fft in addition to standard fft to get freq info independent of max value
+
+Should try to read data in faster using other downloaded program
+
+Seed was set up using 0 not random for runs through replacing fft with tcf
+
+pyRegression_22_27_February_12_2015.csv is regression
+pyRegression_23_24_February_12_2015.csv is randomforest
+.... is lasso
+
+While using lasso:
+/home/zak/anaconda/lib/python2.7/site-packages/sklearn/linear_model/coordinate_descent.py:490: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations
+  ConvergenceWarning)

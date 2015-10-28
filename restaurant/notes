@@ -1,0 +1,44 @@
+***Using extra trees with ntrees=5000
+
+  mtry  numRandomCuts  RMSE     Rsquared    RMSE SD    Rsquared SD
+   2    1              2324381  0.24564916  1094630.3  0.16345534 
+   2    2              2241646  0.20613023  1228041.0  0.16329025 
+   2    3              2072642  0.20301193   901115.1  0.15310527 
+  22    1              2444886  0.14023116   967598.8  0.13744180 
+  22    2              2467737  0.07903246  1160167.8  0.07043889 
+  22    3              2316735  0.13430486   991116.4  0.10563020 
+  43    1              2502150  0.06648895  1128593.5  0.05655517 
+  43    2              2423622  0.08027626  1105232.1  0.06829081 
+  43    3              1978101  0.17121444   329721.4  0.14040913 
+
+RMSE was used to select the optimal model using  the smallest value.
+The final values used for the model were mtry = 43 and numRandomCuts = 3. 
+
+***Replaced day/month/year factors with day/month/year numbers
+
+
+
+***added days.open
+
+***gbm, brnn not strongly correlated, but brnn gets small weighting due to worse RMSE
+
+***bdk id decently uncorrelated with gbm, and has small enough RMSE to get 0.18 weighting
+***blackboost similar
+***bstLs similar
+***gaussprPoly almost as good
+***gcvEarth also similar
+***kernelpls good.
+***kknn decent
+***knn great
+***pls decent
+***plsRglm decent
+***rpart decent
+***rpart2 decent
+***simpls decent
+***spls decent
+***svmPoly good
+***svmRadial decent
+***svmRadialCost decent
+***treebag decent
+***widekernelpls good
+***xyf good

@@ -1,0 +1,16 @@
+'validate' is True
+Subject 3 AUC 0.7028
+Subject 1 AUC 0.7504
+Subject 8 AUC 0.5151
+Subject 4 AUC 0.8069
+Subject 5 AUC 0.5405
+Subject 6 AUC 0.7121
+Subject 7 AUC 0.7956
+Subject 2 AUC 0.9002
+Subject 10 AUC 0.8518
+Subject 11 AUC 0.7702
+Subject 9 AUC 0.7668
+Subject 12 AUC 0.5629
+Mean AUC 0.7046
+Done.
+

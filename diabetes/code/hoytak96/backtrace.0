@@ -1,0 +1,175 @@
+Pointers
+------------
+0xc027cc
+0x5baee7
+0x126a972
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5baee7]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126a972]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5baee7
+0x126a972
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5baee7]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126a972]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5ba797
+0x127899b
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5ba797]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x127899b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5ba797
+0x127899b
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5ba797]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x127899b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5ba797
+0x127899b
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5ba797]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x127899b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5ba797
+0x127899b
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5ba797]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x127899b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+
+Pointers
+------------
+0xc027cc
+0x5ba797
+0x127899b
+0x126304b
+0x1a220c1
+Raw
+------------
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server(_Z18__print_back_tracev+0x8c) [0xc027cc]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x5ba797]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x127899b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x126304b]
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server() [0x1a220c1]
+
+Demangled
+------------
+__print_back_trace()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+/usr/local/lib/python2.7/dist-packages/graphlab/unity_server()
+-------------------------------------------------------
+
+

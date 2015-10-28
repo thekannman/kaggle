@@ -1,0 +1,5 @@
+Fitting 2 folds for each of 1 candidates, totalling 2 fits
+Best score: 0.548
+Best parameters set:
+	svd__n_components: 400
+	svm__C: 10
